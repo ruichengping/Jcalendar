@@ -1,0 +1,63 @@
+.Jcalendar-wrapper {
+    position: fixed;
+    width: 214;
+    padding: 4px 6px;
+    border: 1px solid #d1dbe5;
+    border-radius: 2px;
+    z-index: 2017;
+    box-shadow: 0 2px 6px #ccc;
+    background: #fff;
+}
+
+.Jcalendar-header {
+    margin: 4px 6px;
+}
+
+.Jcalendar-prev-year,
+.Jcalendar-prev-month,
+.Jcalendar-next-month,
+.Jcalendar-next-year {
+    margin: 0;
+    color: #97a8be;
+    font-size: 12px;
+    text-decoration: none;
+    font-weight: 400;
+    padding: 0 8px;
+    vertical-align: 2px;
+}
+
+.Jcalendar-year,
+.Jcalendar-month {
+    color: #48576a;
+    font-size: 14px;
+    line-height: 22px;
+}
+
+.Jcalendar-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.Jcalendar-table th {
+    color: #8391a5;
+    font-size: 12px;
+    line-height: 20px;
+}
+
+.Jcalendar-table td {
+    text-align: center;
+    font-size: 12px;
+    color: #48576a;
+    padding: 6px 0;
+}
+
+.current {
+    background-color: #20a0ff!important;
+    color: #fff !important;
+}
+
+.disabled {
+    background-color: #f4f4f4;
+    cursor: not-allowed;
+    color: #ccc !important;
+}

@@ -7,6 +7,7 @@
     z-index: 2017;
     box-shadow: 0 2px 6px #ccc;
     background: #fff;
+    display: none;
 }
 
 .Jcalendar-header {
@@ -44,11 +45,15 @@
     line-height: 20px;
 }
 
-.Jcalendar-table td {
+.available {
     text-align: center;
     font-size: 12px;
     color: #48576a;
     padding: 6px 0;
+    cursor: pointer;
+}
+.available:hover{
+    background-color: #ddd;
 }
 
 .current {
@@ -57,7 +62,9 @@
 }
 
 .disabled {
-    background-color: #f4f4f4;
     cursor: not-allowed;
-    color: #ccc !important;
+    color: #ddd !important;
+}
+.disabled:hover{
+     background-color: #fff !important;
 }

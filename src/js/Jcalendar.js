@@ -1,6 +1,7 @@
 (function (win, doc) {
+    var inputId = "";
     //根据input来计算并设置Jcalendar的top值和left值
-    function setPosition(inputDom,selector) {
+    function setPosition(inputDom, selector) {
         var left = inputDom.offsetLeft;
         var top = inputDom.offsetTop + inputDom.offsetHeight + 6;
         selector.style.left = left + "px";
@@ -12,6 +13,13 @@
             return "0" + num;
         } else {
             return num;
+        }
+    }
+
+    function removeSelector() {
+        var selector = doc.getElementsByClassName("Jcalendar-wrapper")[0];
+        if (selector) {
+            selector.parentNode.removeChild(selector);
         }
     }
 
@@ -135,7 +143,6 @@
     Jcalendar.prototype = {
         constructor: Jcalendar,
         init: function () {
-            this.render();
             this.bind();
         },
         render: function (year, month, day) {
@@ -182,22 +189,18 @@
                 "</tbody>" +
                 "</table>" +
                 "</div>";
-            //删除旧时间选择器
-            var container=doc.getElementsByClassName("Jcalendar-wrapper")[0];
-            if(container) {
-                container.parentNode.removeChild(container);
-            }
             //渲染时间选择器并绑定事件            
             var element = doc.createElement("div");
-                element.className = "Jcalendar-wrapper";
-                element.innerHTML = htmlStr;
-                doc.body.appendChild(element);
+            element.className = "Jcalendar-wrapper";
+            element.innerHTML = htmlStr;
+            doc.body.appendChild(element);
             this.bindEvent(element);
             //设置时间选择器位置
-            setPosition(this.inputDom,element);            
+            setPosition(this.inputDom, element);
+
         },
         bindEvent: function (element) {
-            var _this=this;
+            var _this = this;
             element.addEventListener("click", function (event) {
                 if (event.target.className === "Jcalendar-prev-year") {
                     //上一年
@@ -222,13 +225,13 @@
                 } else if (event.target.className.indexOf("available") > -1) {
                     //本月可选择的日期
                     _this.currentDay = event.target.innerHTML;
-                    element.style.display = "none";
+                    removeSelector();
                     _this.inputDom.value = _this.currentYear + "-" + toTwo(_this.currentMonth) + "-" + toTwo(_this.currentDay);
                 }
                 event.stopPropagation();
             });
             doc.addEventListener("click", function () {
-               element.style.display = "none";
+                removeSelector();
             });
         },
         bind: function () {
@@ -240,9 +243,9 @@
                 //月
                 _this.currentMonth = checkDateStr(_this.inputDom.value).currentMonth;
                 //日
-                _this.currentDay = checkDateStr(_this.inputDom.value).currentDay
+                _this.currentDay = checkDateStr(_this.inputDom.value).currentDay;
+                removeSelector();
                 _this.render(_this.currentYear, _this.currentMonth, _this.currentDay);
-                doc.getElementsByClassName("Jcalendar-wrapper")[0].style.display = "block";
                 event.stopPropagation();
             });
         }

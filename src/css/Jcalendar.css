@@ -1,6 +1,6 @@
 .Jcalendar-wrapper {
     position: fixed;
-    width: 214;
+    box-sizing: border-box;
     padding: 4px 6px;
     border: 1px solid #d1dbe5;
     border-radius: 2px;
@@ -12,6 +12,7 @@
 
 .Jcalendar-header {
     margin: 4px 6px;
+    text-align: center;
 }
 
 .Jcalendar-prev-year,
@@ -32,6 +33,7 @@
     color: #48576a;
     font-size: 14px;
     line-height: 22px;
+    padding: 0 8px;
 }
 
 .Jcalendar-table {
@@ -48,8 +50,9 @@
 .available {
     text-align: center;
     font-size: 12px;
+    width: 32px;
+    height: 32px;   
     color: #48576a;
-    padding: 6px 0;
     cursor: pointer;
 }
 .available:hover{

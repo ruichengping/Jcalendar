@@ -1,26 +1,54 @@
 (function (win, doc) {
-    var currentYear = "";
-    var currentMonth = "";
     //根据input来计算并设置Jcalendar的top值和left值
-    function setPosition(inputDom) {
+    function setPosition(inputDom,selector) {
         var left = inputDom.offsetLeft;
-        var top = inputDom.clientHeight + inputDom.offsetHeight + 6;
-        console.log(left + ";" + top);
+        var top = inputDom.offsetTop + inputDom.offsetHeight + 6;
+        selector.style.left = left + "px";
+        selector.style.top = top + "px";
     }
-    function toTwo(num){
-        if(num<10){
-            return "0"+num;
-        }else{
+
+    function toTwo(num) {
+        if (num < 10) {
+            return "0" + num;
+        } else {
             return num;
         }
     }
+
+    function checkDateStr(dateStr) {
+        var dateArray = dateStr.split("-");
+        var currentYear = "";
+        var currentMonth = "";
+        var currentDay = "";
+        var today = new Date();
+        if (dateStr === '') {
+            currentYear = today.getFullYear();
+            currentMonth = today.getMonth() + 1;
+            currentDay = today.getDate();
+        } else if (dateArray.length === 3) {
+            var year = dateArray[0];
+            var month = parseInt(dateArray[1]);
+            var day = parseInt(dateArray[2]);
+            if (new Date(year, month, 0) >= day) {
+                currentYear = year;
+                currentMonth = month;
+                currentDay = day;
+            }
+        }
+        return {
+            "currentYear": currentYear,
+            "currentMonth": currentMonth,
+            "currentDay": currentDay
+        }
+    }
     //根据年，月获取日数组
-    function getMonthData(year, month) {
+    function getMonthData(year, month, day) {
         var days = [];
         var today = new Date();
-        if (!year || !month) {
+        if (!year | !month | !day) {
             year = today.getFullYear();
             month = today.getMonth() + 1;
+            day = today.getDate();
         }
         //获取该月第一天的Date对象
         var firstDateObj = new Date(year, month - 1, 1);
@@ -39,9 +67,12 @@
             var className = "available disabled";
             var thisMonth = month - 1;
             var date = lastDateOfPrevMonth - firstDateWeekDay + i + 1;
-            if (thisMonth === 0) { thisMonth = 1; }
+            if (thisMonth === 0) {
+                thisMonth = 1;
+            }
             days.push({
                 "date": date,
+                "showDate": date,
                 "thisMonth": thisMonth,
                 "className": className
             });
@@ -51,14 +82,25 @@
             var className = "available";
             var date = i + 1;
             var thisMonth = month;
-            if (date === today.getDate()) {
+            if (date === day) {
                 className = "available current";
             }
-            days.push({
-                "date": date,
-                "thisMonth": thisMonth,
-                "className": className
-            });
+            if (today.getDate() === date && today.getFullYear() === year && today.getMonth() + 1 === month) {
+                days.push({
+                    "date": date,
+                    "showDate": "今天",
+                    "thisMonth": thisMonth,
+                    "className": className
+                });
+            } else {
+                days.push({
+                    "date": date,
+                    "showDate": date,
+                    "thisMonth": thisMonth,
+                    "className": className
+                });
+            }
+
         }
         var nextMonthLength = days.length;
         //下月
@@ -66,9 +108,12 @@
             var className = 'available disabled';
             var date = i + 1;
             var thisMonth = month + 1;
-            if (thisMonth === 13) { thisMonth = 12; }
+            if (thisMonth === 13) {
+                thisMonth = 12;
+            }
             days.push({
                 "date": date,
+                "showDate": date,
                 "thisMonth": thisMonth,
                 "className": className
             });
@@ -79,8 +124,12 @@
             "days": days
         }
     }
+
     function Jcalendar(options) {
         this.inputDom = doc.getElementById(options.input);
+        this.currentYear = "";
+        this.currentMonth = "";
+        this.currentDay = "";
         this.init();
     }
     Jcalendar.prototype = {
@@ -89,79 +138,112 @@
             this.render();
             this.bind();
         },
-        render: function (year, month) {
-            var monthData = getMonthData(year, month);
+        render: function (year, month, day) {
+            var monthData = getMonthData(year, month, day);
             var year = monthData.year;
             var month = monthData.month;
             var days = monthData.days;
-            currentYear = year;
-            currentMonth = month;
+            this.currentYear = year;
+            this.currentMonth = month;
+            this.currentDay = day;
             var daysHtml = "";
             days.forEach(function (item, index) {
                 if (index % 7 === 0) {
                     daysHtml += "<tr>";
                 }
-                daysHtml += "<td class='" + item.className + "'>" + item.date + "</td>"
+                daysHtml += "<td class='" + item.className + "'>" + item.showDate + "</td>"
                 if (index % 7 === 6) {
                     daysHtml += "<tr>";
                 }
             });
-            var htmlStr = "<div class='Jcalendar-header'>"
-                + "<a class='Jcalendar-prev-year' href='javascript:void(0);'>&lt;&lt;</a>"
-                + "<a class='Jcalendar-prev-month' href='javascript:void(0);'>&lt;</a>"
-                + "<span class='Jcalendar-year'> " + currentYear + "年</span>"
-                + "<span class='Jcalendar-month'>" + toTwo(currentMonth) + "月 </span>"
-                + "<a class='Jcalendar-next-month' href='javascript:void(0);'>&gt;</a>"
-                + "<a class='Jcalendar-next-year' href='javascript:void(0);'>&gt;&gt;</a>"
-                + "</div>"
-                + "<div class='Jcalendar-body'>"
-                + "<table class='Jcalendar-table'>"
-                + "<thead>"
-                + "<tr>"
-                + "<th>日</th>"
-                + "<th>一</th>"
-                + "<th>二</th>"
-                + "<th>三</th>"
-                + "<th>四</th>"
-                + "<th>五</th>"
-                + "<th>六</th>"
-                + "</tr>"
-                + "</thead>"
-                + "<tbody>"
-                + daysHtml
-                + "</tbody>"
-                + "</table>"
-                + "</div>";
-
-            if (doc.getElementsByClassName("Jcalendar-wrapper").length === 0) {
-                var element = doc.createElement("div");
+            var htmlStr = "<div class='Jcalendar-header'>" +
+                "<a class='Jcalendar-prev-year' href='javascript:void(0);'>&lt;&lt;</a>" +
+                "<a class='Jcalendar-prev-month' href='javascript:void(0);'>&lt;</a>" +
+                "<span class='Jcalendar-year'> " + this.currentYear + "年</span>" +
+                "<span class='Jcalendar-month'>" + toTwo(this.currentMonth) + "月 </span>" +
+                "<a class='Jcalendar-next-month' href='javascript:void(0);'>&gt;</a>" +
+                "<a class='Jcalendar-next-year' href='javascript:void(0);'>&gt;&gt;</a>" +
+                "</div>" +
+                "<div class='Jcalendar-body'>" +
+                "<table class='Jcalendar-table'>" +
+                "<thead>" +
+                "<tr>" +
+                "<th>日</th>" +
+                "<th>一</th>" +
+                "<th>二</th>" +
+                "<th>三</th>" +
+                "<th>四</th>" +
+                "<th>五</th>" +
+                "<th>六</th>" +
+                "</tr>" +
+                "</thead>" +
+                "<tbody>" +
+                daysHtml +
+                "</tbody>" +
+                "</table>" +
+                "</div>";
+            //删除旧时间选择器
+            var container=doc.getElementsByClassName("Jcalendar-wrapper")[0];
+            if(container) {
+                container.parentNode.removeChild(container);
+            }
+            //渲染时间选择器并绑定事件            
+            var element = doc.createElement("div");
                 element.className = "Jcalendar-wrapper";
                 element.innerHTML = htmlStr;
                 doc.body.appendChild(element);
-            } else {
-                doc.getElementsByClassName("Jcalendar-wrapper")[0].innerHTML = htmlStr;
-            }
+            this.bindEvent(element);
+            //设置时间选择器位置
+            setPosition(this.inputDom,element);            
+        },
+        bindEvent: function (element) {
+            var _this=this;
+            element.addEventListener("click", function (event) {
+                if (event.target.className === "Jcalendar-prev-year") {
+                    //上一年
+                    _this.inputDom.focus();
+                    _this.render(_this.currentYear - 1, _this.currentMonth, _this.currentDay);
+                } else if (event.target.className === "Jcalendar-prev-month") {
+                    //上月
+                    _this.inputDom.focus();
+                    _this.render(_this.currentYear, _this.currentMonth - 1, _this.currentDay);
+                } else if (event.target.className === "Jcalendar-next-month") {
+                    //下月
+                    _this.inputDom.focus();
+                    if (_this.currentMonth + 1 > 12) {
+                        _this.render(_this.currentYear + 1, 1, _this.currentDay);
+                    } else {
+                        _this.render(_this.currentYear, _this.currentMonth + 1, _this.currentDay);
+                    }
+                } else if (event.target.className === "Jcalendar-next-year") {
+                    //下年
+                    _this.inputDom.focus();
+                    _this.render(_this.currentYear + 1, _this.currentMonth, _this.currentDay);
+                } else if (event.target.className.indexOf("available") > -1) {
+                    //本月可选择的日期
+                    _this.currentDay = event.target.innerHTML;
+                    element.style.display = "none";
+                    _this.inputDom.value = _this.currentYear + "-" + toTwo(_this.currentMonth) + "-" + toTwo(_this.currentDay);
+                }
+                event.stopPropagation();
+            });
+            doc.addEventListener("click", function () {
+               element.style.display = "none";
+            });
         },
         bind: function () {
             var _this = this;
             //input框控制Jcalendar的显示和隐藏
-            this.inputDom.addEventListener("click", function () {
+            this.inputDom.addEventListener("click", function (event) {
+                //年
+                _this.currentYear = checkDateStr(_this.inputDom.value).currentYear;
+                //月
+                _this.currentMonth = checkDateStr(_this.inputDom.value).currentMonth;
+                //日
+                _this.currentDay = checkDateStr(_this.inputDom.value).currentDay
+                _this.render(_this.currentYear, _this.currentMonth, _this.currentDay);
                 doc.getElementsByClassName("Jcalendar-wrapper")[0].style.display = "block";
-            });
-            doc.addEventListener("click", function (event) {
-                if (event.target.className === "Jcalendar-prev-year") {
-                    _this.inputDom.focus();
-                    _this.render(currentYear - 1, currentMonth);
-                } else if (event.target.className === "Jcalendar-prev-month") {
-                    _this.inputDom.focus();
-                    _this.render(currentYear, currentMonth - 1);
-                } else if (event.target.className === "Jcalendar-next-month") {
-                    _this.inputDom.focus();
-                    _this.render(currentYear, currentMonth +1);
-                } else if (event.target.className === "Jcalendar-next-year") {
-                    _this.inputDom.focus();
-                    _this.render(currentYear+1, currentMonth);
-                }
+                event.stopPropagation();
             });
         }
     }

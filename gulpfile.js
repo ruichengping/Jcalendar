@@ -10,12 +10,12 @@ gulp.task('export-css', function () {
         }))
         .pipe(minifyCSS())
         .pipe(rename({suffix:'.min'}))
-        .pipe(gulp.dest('./dist'));
+        .pipe(gulp.dest('./lib'));
 });
 gulp.task('export-js',function(){
     return gulp.src('./src/js/Jcalendar.js')
            .pipe(uglify())
            .pipe(rename({suffix:'.min'}))
-           .pipe(gulp.dest('./dist'));
+           .pipe(gulp.dest('./lib'));
 });   
 gulp.task('default', ['export-css','export-js']);

@@ -1,12 +1,20 @@
 .Jcalendar-wrapper {
     position: fixed;
+    right: 0;
+    bottom: 0;
+    left:0;
     box-sizing: border-box;
     padding: 4px 6px;
-    border: 1px solid #d1dbe5;
-    border-radius: 2px;
     z-index: 2017;
-    box-shadow: 0 2px 6px #ccc;
     background: #fff;
+}
+.Jcalendar-bg{
+    position: fixed;
+    top:0;
+    right: 0;
+    bottom: 0;    
+    left:0;
+    background-color: rgba(0,0,0,0.6);
 }
 
 .Jcalendar-header {
@@ -26,7 +34,14 @@
     padding: 0 8px;
     vertical-align: 2px;
 }
-
+.Jcalendar-prev-year,
+.Jcalendar-prev-month{
+    float: left;
+}
+.Jcalendar-next-month,
+.Jcalendar-next-year {
+    float: right;    
+}
 .Jcalendar-year,
 .Jcalendar-month {
     color: #48576a;

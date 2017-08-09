@@ -1,13 +1,5 @@
 (function (win, doc) {
     var inputId = "";
-    //根据input来计算并设置Jcalendar的top值和left值
-    function setPosition(inputDom, selector) {
-        var left = inputDom.offsetLeft;
-        var top = inputDom.offsetTop + inputDom.offsetHeight + 6;
-        selector.style.left = left + "px";
-        selector.style.top = top + "px";
-    }
-
     function toTwo(num) {
         if (num < 10) {
             return "0" + num;
@@ -18,8 +10,12 @@
 
     function removeSelector() {
         var selector = doc.getElementsByClassName("Jcalendar-wrapper")[0];
+        var bg=doc.getElementsByClassName("Jcalendar-bg")[0];
         if (selector) {
             selector.parentNode.removeChild(selector);
+        }
+        if(bg){
+            bg.parentNode.removeChild(bg);
         }
     }
 
@@ -168,8 +164,8 @@
                 "<a class='Jcalendar-prev-month' href='javascript:void(0);'>&lt;</a>" +
                 "<span class='Jcalendar-year'> " + this.currentYear + "年</span>" +
                 "<span class='Jcalendar-month'>" + toTwo(this.currentMonth) + "月 </span>" +
-                "<a class='Jcalendar-next-month' href='javascript:void(0);'>&gt;</a>" +
                 "<a class='Jcalendar-next-year' href='javascript:void(0);'>&gt;&gt;</a>" +
+                "<a class='Jcalendar-next-month' href='javascript:void(0);'>&gt;</a>" +                
                 "</div>" +
                 "<div class='Jcalendar-body'>" +
                 "<table class='Jcalendar-table'>" +
@@ -197,10 +193,13 @@
                 var element = doc.createElement("div");
                 element.className = "Jcalendar-wrapper";
                 element.innerHTML = htmlStr;
+                //背景层
+                var bg=doc.createElement("div");
+                bg.className="Jcalendar-bg";
+
+                doc.body.appendChild(bg);
                 doc.body.appendChild(element);
                 this.selectorBindEvent(element);
-                //设置时间选择器位置
-                setPosition(this.inputDom, element);
             }
         },
         inputBindEvent: function () {

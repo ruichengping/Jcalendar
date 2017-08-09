@@ -10,12 +10,20 @@
 
     function removeSelector() {
         var selector = doc.getElementsByClassName("Jcalendar-wrapper")[0];
-        var bg=doc.getElementsByClassName("Jcalendar-bg")[0];
-        if (selector) {
-            selector.parentNode.removeChild(selector);
+        var bg = doc.getElementsByClassName("Jcalendar-bg")[0];
+        if (typeof selector === "object") {
+            selector.style.bottom = "-100%";
+            var timer1 = setTimeout(function () {
+                selector.parentNode.removeChild(selector);
+                clearTimeout(timer1);
+            }, 300);
         }
-        if(bg){
-            bg.parentNode.removeChild(bg);
+        if (typeof bg === "object") {
+            bg.style.opacity = "0";
+            var timer2 = setTimeout(function () {
+                bg.parentNode.removeChild(bg);
+                clearTimeout(timer2)
+            }, 300);
         }
     }
 
@@ -165,7 +173,7 @@
                 "<span class='Jcalendar-year'> " + this.currentYear + "年</span>" +
                 "<span class='Jcalendar-month'>" + toTwo(this.currentMonth) + "月 </span>" +
                 "<a class='Jcalendar-next-year' href='javascript:void(0);'>&gt;&gt;</a>" +
-                "<a class='Jcalendar-next-month' href='javascript:void(0);'>&gt;</a>" +                
+                "<a class='Jcalendar-next-month' href='javascript:void(0);'>&gt;</a>" +
                 "</div>" +
                 "<div class='Jcalendar-body'>" +
                 "<table class='Jcalendar-table'>" +
@@ -194,12 +202,17 @@
                 element.className = "Jcalendar-wrapper";
                 element.innerHTML = htmlStr;
                 //背景层
-                var bg=doc.createElement("div");
-                bg.className="Jcalendar-bg";
+                var bg = doc.createElement("div");
+                bg.className = "Jcalendar-bg";
 
                 doc.body.appendChild(bg);
                 doc.body.appendChild(element);
-                this.selectorBindEvent(element);
+                var timer = setTimeout(function () {
+                    bg.style.opacity = "1";
+                    element.style.bottom = "0";
+                    clearTimeout(timer);
+                }, 50);
+                this.selectorBindEvent(element,bg);
             }
         },
         inputBindEvent: function () {
@@ -216,30 +229,27 @@
                 _this.render(_this.currentYear, _this.currentMonth, _this.currentDay, true);
                 event.stopPropagation();
             });
-            doc.addEventListener("click", function () {
-                removeSelector();
-            });
         },
-        selectorBindEvent: function (element) {
+        selectorBindEvent: function (element, bg) {
             var _this = this;
             element.addEventListener("click", function (event) {
-                    _this.inputDom.focus();                
+                _this.inputDom.focus();
                 if (event.target.className === "Jcalendar-prev-year") {
                     //上一年
-                    _this.render(_this.currentYear - 1, _this.currentMonth, _this.currentDay,false);
+                    _this.render(_this.currentYear - 1, _this.currentMonth, _this.currentDay, false);
                 } else if (event.target.className === "Jcalendar-prev-month") {
                     //上月
-                    _this.render(_this.currentYear, _this.currentMonth - 1, _this.currentDay,false);
+                    _this.render(_this.currentYear, _this.currentMonth - 1, _this.currentDay, false);
                 } else if (event.target.className === "Jcalendar-next-month") {
                     //下月
                     if (_this.currentMonth + 1 > 12) {
                         _this.render(_this.currentYear + 1, 1, _this.currentDay);
                     } else {
-                        _this.render(_this.currentYear, _this.currentMonth + 1, _this.currentDay,false);
+                        _this.render(_this.currentYear, _this.currentMonth + 1, _this.currentDay, false);
                     }
                 } else if (event.target.className === "Jcalendar-next-year") {
                     //下年
-                    _this.render(_this.currentYear + 1, _this.currentMonth, _this.currentDay,false);
+                    _this.render(_this.currentYear + 1, _this.currentMonth, _this.currentDay, false);
                 } else if (event.target.className.indexOf("available") > -1) {
                     //本月可选择的日期
                     _this.currentDay = event.target.innerHTML;
@@ -247,6 +257,9 @@
                     _this.inputDom.value = _this.currentYear + "-" + toTwo(_this.currentMonth) + "-" + toTwo(_this.currentDay);
                 }
                 event.stopPropagation();
+            });
+            bg.addEventListener("click", function () {
+                removeSelector();
             });
         }
     }

@@ -15,16 +15,23 @@
 </style>
 <body>
     <input id="date"  type="text" value="" placeholder="请选择时间"/>
-    <input id="date1"  type="text" value="" placeholder="请选择时间"/>
-   
+    <!-- <input id="date1"  type="text" value="" placeholder="请选择时间"/> -->
+    <!-- <div class='Jcalendar-time-wrapper'>
+        <table class='Jcalendar-time-table'>
+            <tr>
+                <td><p class='hour-add'>+</p><p class='hour-text'>12</p><p class='hour-dec'>-</p></td>
+                <td><p class='minute-add'>+</p>><p class='minute-text'>12</p><p class='minute-dec'>-</p></td>
+                <td><p class='second-add'>+</p><p class='second-text'>12</p><p class='second-dec'>-</p></td>
+            </tr>
+        </table>
+    </div> -->
 </body>
 <script src="./js/Jcalendar.js"></script>
 <script>
     new Jcalendar({
         input:'date',
-    });
-     new Jcalendar({
-        input:'date1',
+        timeSelector:true,
+        title:"请选择开始时间"
     });
 </script>
 </html>

@@ -1,13 +1,17 @@
 .Jcalendar-wrapper {
     position: fixed;
     right: 0;
-    bottom: -100%;
+    bottom: 0;
     left:0;
     box-sizing: border-box;
     padding: 4px 6px;
     z-index: 2017;
     background: #fff;
-    transition:bottom 0.3s;    
+    transform: translateY(100%);    
+    transition:transform 0.3s;  
+}
+.show{
+    transform: translateY(0)!important;    
 }
 .Jcalendar-bg{
     position: fixed;
@@ -19,10 +23,33 @@
     opacity: 0;
     transition:opacity 0.3s;
 }
-
-.Jcalendar-header {
-    margin: 4px 6px;
+/* 头部 */
+.Jcalendar-header{
     text-align: center;
+    height: 38px;
+    line-height: 38px;
+}
+.Jcalendar-title-text{
+    color: #1f2f3d;
+    font-size: 16px;
+}
+.Jcalendar-btn-cancel,.Jcalendar-btn-sure{
+    font-size: 14px;
+    text-decoration: none;
+    color: #20a0ff;
+    padding: 0 10px;
+}
+.Jcalendar-btn-cancel{
+    float: left;
+}
+.Jcalendar-btn-sure{
+    float: right;
+}
+/*主体*/
+.Jcalendar-body{
+    position: relative;
+    overflow: hidden;
+    height: 258px;
 }
 
 .Jcalendar-prev-year,
@@ -52,13 +79,21 @@
     line-height: 22px;
     padding: 0 8px;
 }
-
-.Jcalendar-table {
+/* 日期选择 */
+.Jcalendar-date-wrapper{
     width: 100%;
+    height: 100%;
+}
+.Jcalendar-date-table {
+    width: 100%;
+    height: 100%;
     border-collapse: collapse;
 }
-
-.Jcalendar-table th {
+.Jcalendar-date-header {
+    margin: 4px 6px 12px;
+    text-align: center;
+}
+.Jcalendar-date-table th {
     color: #8391a5;
     font-size: 12px;
     line-height: 20px;
@@ -66,9 +101,7 @@
 
 .available {
     text-align: center;
-    font-size: 12px;
-    width: 32px;
-    height: 32px;   
+    font-size: 12px;   
     color: #48576a;
     cursor: pointer;
 }
@@ -87,4 +120,31 @@
 }
 .disabled:hover{
      background-color: #fff !important;
+}
+/*时间选择 */
+.Jcalendar-time-wrapper{
+ position: absolute;
+    height: 100%;
+    width: 100%;
+    bottom: 0;
+    background-color: #fff;
+    transform: translateY(100%);    
+    transition:transform 0.1s; 
+}
+.Jcalendar-time-table{
+    height: 100%;
+    width: 100%;
+    border-collapse: collapse;
+}
+.Jcalendar-time-table td{
+    text-align: center;
+}
+.Jcalendar-btn-tab{
+    border-top: 1px solid #e4e4e4;
+    text-align: center;
+    margin: 0;
+    height: 36px;
+    line-height: 36px;
+    font-size: 14px;
+    color: #1f2f3d;    
 }

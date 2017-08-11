@@ -1,4 +1,8 @@
-(function (win, doc) {
+(function(global,factory){
+    typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
+	typeof define === 'function' && define.amd ? define(factory) :
+	(global.Jcalendar = factory());
+})(this,(function () {
     var inputId = "";
     //一位变两位
     function toTwo(num) {
@@ -10,8 +14,8 @@
     }
     //移除选择器
     function removeSelector() {
-        var selector = doc.getElementsByClassName("Jcalendar-wrapper")[0];
-        var bg = doc.getElementsByClassName("Jcalendar-bg")[0];
+        var selector = document.getElementsByClassName("Jcalendar-wrapper")[0];
+        var bg = document.getElementsByClassName("Jcalendar-bg")[0];
         if (typeof selector === "object") {
             selector.style.bottom = "-100%";
             var timer1 = setTimeout(function () {
@@ -140,7 +144,7 @@
     }
 
     function Jcalendar(options) {
-        this.inputDom = doc.getElementById(options.input);
+        this.inputDom = document.getElementById(options.input);
         this.currentYear = "";
         this.currentMonth = "";
         this.currentDay = "";
@@ -239,21 +243,21 @@
                 "<div class='Jcalendar-footer'>" +
                 footHtml +
                 "</div>";
-            var container = doc.getElementsByClassName("Jcalendar-wrapper")[0];
+            var container = document.getElementsByClassName("Jcalendar-wrapper")[0];
             if (!flag && typeof container === "object") {
                 container.innerHTML = htmlStr;
-                this.selectorBindEvent(container, document.getElementsByClassName("Jcalendar-bg")[0]);
+                this.selectorBindEvent(container, documentument.getElementsByClassName("Jcalendar-bg")[0]);
             } else {
                 //渲染时间选择器并绑定事件            
-                var element = doc.createElement("div");
+                var element = document.createElement("div");
                 element.className = "Jcalendar-wrapper";
                 element.innerHTML = htmlStr;
                 //背景层
-                var bg = doc.createElement("div");
+                var bg = document.createElement("div");
                 bg.className = "Jcalendar-bg";
 
-                doc.body.appendChild(bg);
-                doc.body.appendChild(element);
+                document.body.appendChild(bg);
+                document.body.appendChild(element);
                 var timer = setTimeout(function () {
                     bg.style.opacity = "1";
                     element.className = "Jcalendar-wrapper show";
@@ -425,14 +429,5 @@
             });
         }
     }
-
-    if (typeof exports == "object") {
-        module.exports = Jcalendar;
-    } else if (typeof define == "function" && define.amd) {
-        define([], function () {
-            return Jcalendar;
-        })
-    } else {
-        win.Jcalendar = Jcalendar;
-    }
-})(window, document);
+   return Jcalendar;
+}));

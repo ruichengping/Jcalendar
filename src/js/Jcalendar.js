@@ -148,6 +148,7 @@
         this.currentMinute = 0;
         this.currentSecond = 0;
         this.timeSelector = false;
+        this.startYear = 1970;
         this.title = "请选择";
         if (options.title && typeof options.title === "string") {
             this.title = options.title;
@@ -300,14 +301,16 @@
             });
             //上一年
             element.getElementsByClassName("Jcalendar-prev-year")[0].addEventListener("click", function (event) {
-                _this.render(_this.currentYear - 1, _this.currentMonth, _this.currentDay, _this.currentHour, _this.currentMinute, _this.currentSecond, false);
+                if (_this.currentYear > _this.startYear) {
+                    _this.render(_this.currentYear - 1, _this.currentMonth, _this.currentDay, _this.currentHour, _this.currentMinute, _this.currentSecond, false);
+                }
                 event.stopPropagation();
             });
             //上月
             element.getElementsByClassName("Jcalendar-prev-month")[0].addEventListener("click", function (event) {
-                if (_this.currentMonth - 1 === 0) {
+                if (_this.currentMonth - 1 === 0&&_this.currentYear>_this.startYear) {
                     _this.render(_this.currentYear - 1, 12, _this.currentDay, _this.currentHour, _this.currentMinute, _this.currentSecond, false);
-                } else {
+                } else if(_this.currentMonth - 1 >0){
                     _this.render(_this.currentYear, _this.currentMonth - 1, _this.currentDay, _this.currentHour, _this.currentMinute, _this.currentSecond, false);
                 }
                 event.stopPropagation();

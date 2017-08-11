@@ -29,29 +29,39 @@
     }
     //检查日期格式
     function checkDateStr(dateStr) {
-        var dateArray = dateStr.split("-");
-        var currentYear = "";
-        var currentMonth = "";
-        var currentDay = "";
         var today = new Date();
-        if (dateStr === '') {
-            currentYear = today.getFullYear();
-            currentMonth = today.getMonth() + 1;
-            currentDay = today.getDate();
-        } else if (dateArray.length === 3) {
-            var year = dateArray[0];
-            var month = parseInt(dateArray[1]);
-            var day = parseInt(dateArray[2]);
-            if (new Date(year, month, 0) >= day) {
-                currentYear = year;
-                currentMonth = month;
-                currentDay = day;
-            }
+        var currentYear = today.getFullYear();
+        var currentMonth = today.getMonth() + 1;
+        var currentDay = today.getDate();
+        var currentHour = today.getHours();
+        var currentMinute = today.getMinutes();
+        var currentSecond = today.getSeconds();
+        var dateArray = [];
+        var timeArray = [];
+        var dateReg = /^[0-9]{3}[1-9]\-[0-9][1-9]\-[0-9][1-9]$/;
+        var dateTimeReg = /^[0-9]{3}[1-9]\-[0-9][1-9]\-[0-9][1-9] ([0-1][1-9]|2[0-3])\:[0-5][0-9]\:[0-5][0-9]$/;
+        if (dateTimeReg.test(dateStr)) {
+            dateArray = /[0-9]{3}[1-9]\-[0-9][1-9]\-[0-9][1-9]/.exec(dateStr)[0].split("-");
+            currentYear = dateArray[0];
+            currentMonth = dateArray[1];
+            currentDay = dateArray[2];
+            timeArray = /([0-1][1-9]|2[0-3])\:[0-5][0-9]\:[0-5][0-9]/.exec(dateStr)[0].split(":");
+            currentHour = timeArray[0];
+            currentMinute = timeArray[1];
+            currentSecond = timeArray[2];
+        } else if (dateReg.test(dateStr)) {
+            dateArray = /[0-9]{3}[1-9]\-[0-9][1-9]\-[0-9][1-9]/.exec(dateStr)[0].split("-");
+            currentYear = dateArray[0];
+            currentMonth = dateArray[1];
+            currentDay = dateArray[2];
         }
         return {
-            "currentYear": currentYear,
-            "currentMonth": currentMonth,
-            "currentDay": currentDay
+            "currentYear": parseInt(currentYear),
+            "currentMonth": parseInt(currentMonth),
+            "currentDay": parseInt(currentDay),
+            "currentHour": parseInt(currentHour),
+            "currentMinute": parseInt(currentMinute),
+            "currentSecond": parseInt(currentSecond)
         }
     }
     //根据年，月获取日数组
@@ -77,7 +87,7 @@
         var lastDateOfPrevMonth = lastDateOfPrevMonthObj.getDate();
         //上月
         for (var i = 0; i < firstDateWeekDay; i++) {
-            var className = "available disabled";
+            var className = "disabled";
             var thisMonth = month - 1;
             var date = lastDateOfPrevMonth - firstDateWeekDay + i + 1;
             if (thisMonth === 0) {
@@ -95,30 +105,21 @@
             var className = "available";
             var date = i + 1;
             var thisMonth = month;
-            if (date === day) {
+            if (date === parseInt(day)) {
                 className = "available current";
             }
-            if (today.getDate() === date && today.getFullYear() === year && today.getMonth() + 1 === month) {
-                days.push({
-                    "date": date,
-                    "showDate": "今天",
-                    "thisMonth": thisMonth,
-                    "className": className
-                });
-            } else {
-                days.push({
-                    "date": date,
-                    "showDate": date,
-                    "thisMonth": thisMonth,
-                    "className": className
-                });
-            }
+            days.push({
+                "date": date,
+                "showDate": date,
+                "thisMonth": thisMonth,
+                "className": className
+            });
 
         }
         var nextMonthLength = days.length;
         //下月
         for (var i = 0; i < 7 * 6 - nextMonthLength; i++) {
-            var className = 'available disabled';
+            var className = "disabled";
             var date = i + 1;
             var thisMonth = month + 1;
             if (thisMonth === 13) {
@@ -143,6 +144,9 @@
         this.currentYear = "";
         this.currentMonth = "";
         this.currentDay = "";
+        this.currentHour = 0;
+        this.currentMinute = 0;
+        this.currentSecond = 0;
         this.timeSelector = false;
         this.title = "请选择";
         if (options.title && typeof options.title === "string") {
@@ -159,7 +163,7 @@
         init: function () {
             this.inputBindEvent();
         },
-        render: function (year, month, day, flag) {
+        render: function (year, month, day, hour, minute, second, flag) {
             var monthData = getMonthData(year, month, day);
             var year = monthData.year;
             var month = monthData.month;
@@ -167,6 +171,9 @@
             this.currentYear = year;
             this.currentMonth = month;
             this.currentDay = day;
+            this.currentHour = hour;
+            this.currentMinute = minute;
+            this.currentSecond = second;
             var daysHtml = "";
             days.forEach(function (item, index) {
                 if (index % 7 === 0) {
@@ -208,9 +215,9 @@
             var timeSelectorHtml = !this.timeSelector ? "" : "<div class='Jcalendar-time-wrapper'>" +
                 "<table class='Jcalendar-time-table'>" +
                 "<tr>" +
-                "<td><p class='Jcalendar-time-tag'>时</p><p class='hour-add'>+</p><p class='hour-text'>12</p><p class='hour-dec'>-</p></td>" +
-                "<td><p class='Jcalendar-time-tag'>分</p><p class='minute-add'>+</p><p class='minute-text'>12</p><p class='minute-dec'>-</p></td>" +
-                "<td><p class='Jcalendar-time-tag'>秒</p><p class='second-add'>+</p><p class='second-text'>12</p><p class='second-dec'>-</p></td>" +
+                "<td><p class='Jcalendar-time-tag'>时</p><p class='hour-add'>+</p><p class='hour-text'>" + toTwo(this.currentHour) + "</p><p class='hour-dec'>-</p></td>" +
+                "<td><p class='Jcalendar-time-tag'>分</p><p class='minute-add'>+</p><p class='minute-text'>" + toTwo(this.currentMinute) + "</p><p class='minute-dec'>-</p></td>" +
+                "<td><p class='Jcalendar-time-tag'>秒</p><p class='second-add'>+</p><p class='second-text'>" + toTwo(this.currentSecond) + "</p><p class='second-dec'>-</p></td>" +
                 "</tr>" +
                 "</table>" +
                 "</div>";
@@ -234,7 +241,7 @@
             var container = doc.getElementsByClassName("Jcalendar-wrapper")[0];
             if (!flag && typeof container === "object") {
                 container.innerHTML = htmlStr;
-                this.selectorBindEvent(container,document.getElementsByClassName("Jcalendar-bg")[0]);                                            
+                this.selectorBindEvent(container, document.getElementsByClassName("Jcalendar-bg")[0]);
             } else {
                 //渲染时间选择器并绑定事件            
                 var element = doc.createElement("div");
@@ -251,7 +258,7 @@
                     element.className = "Jcalendar-wrapper show";
                     clearTimeout(timer);
                 }, 50);
-                this.selectorBindEvent(element, bg);                            
+                this.selectorBindEvent(element, bg);
             }
         },
         inputBindEvent: function () {
@@ -264,7 +271,13 @@
                 _this.currentMonth = checkDateStr(_this.inputDom.value).currentMonth;
                 //日
                 _this.currentDay = checkDateStr(_this.inputDom.value).currentDay;
-                _this.render(_this.currentYear, _this.currentMonth, _this.currentDay, true);
+                //时
+                _this.currentHour = checkDateStr(_this.inputDom.value).currentHour;
+                //分 
+                _this.currentMinute = checkDateStr(_this.inputDom.value).currentMinute;
+                //秒
+                _this.currentSecond = checkDateStr(_this.inputDom.value).currentSecond;
+                _this.render(_this.currentYear, _this.currentMonth, _this.currentDay, _this.currentHour, _this.currentMinute, _this.currentSecond, true);
                 event.stopPropagation();
             });
         },
@@ -272,52 +285,138 @@
             var _this = this;
             //“确定”按钮
             element.getElementsByClassName("Jcalendar-btn-sure")[0].addEventListener("click", function (event) {
-                if(this.timeSelector===false){
-                    _this.inputDom.value = _this.currentYear + "-" + toTwo(_this.currentMonth) + "-" + toTwo(_this.currentDay);                    
+                if (_this.timeSelector === false) {
+                    _this.inputDom.value = _this.currentYear + "-" + toTwo(_this.currentMonth) + "-" + toTwo(_this.currentDay);
+                } else {
+                    _this.inputDom.value = _this.currentYear + "-" + toTwo(_this.currentMonth) + "-" + toTwo(_this.currentDay) + " " + toTwo(_this.currentHour) + ":" + toTwo(_this.currentMinute) + ":" + toTwo(_this.currentSecond);
                 }
-                removeSelector(element);               
+                removeSelector(element);
                 event.stopPropagation();
             });
             //"取消“按钮
-            element.getElementsByClassName("Jcalendar-btn-cancel")[0].addEventListener("click",function(event){
+            element.getElementsByClassName("Jcalendar-btn-cancel")[0].addEventListener("click", function (event) {
                 event.stopPropagation();
                 removeSelector(element);
             });
             //上一年
             element.getElementsByClassName("Jcalendar-prev-year")[0].addEventListener("click", function (event) {
-                _this.render(_this.currentYear - 1, _this.currentMonth, _this.currentDay, false);
+                _this.render(_this.currentYear - 1, _this.currentMonth, _this.currentDay, _this.currentHour, _this.currentMinute, _this.currentSecond, false);
                 event.stopPropagation();
             });
             //上月
             element.getElementsByClassName("Jcalendar-prev-month")[0].addEventListener("click", function (event) {
-                 if (_this.currentMonth - 1 === 0) {
-                    _this.render(_this.currentYear - 1, 12, _this.currentDay,false);
+                if (_this.currentMonth - 1 === 0) {
+                    _this.render(_this.currentYear - 1, 12, _this.currentDay, _this.currentHour, _this.currentMinute, _this.currentSecond, false);
                 } else {
-                    _this.render(_this.currentYear, _this.currentMonth -1, _this.currentDay, false);
+                    _this.render(_this.currentYear, _this.currentMonth - 1, _this.currentDay, _this.currentHour, _this.currentMinute, _this.currentSecond, false);
                 }
                 event.stopPropagation();
             });
             //下月
             element.getElementsByClassName("Jcalendar-next-month")[0].addEventListener("click", function (event) {
                 if (_this.currentMonth + 1 > 12) {
-                    _this.render(_this.currentYear + 1, 1, _this.currentDay,false);
+                    _this.render(_this.currentYear + 1, 1, _this.currentDay, false);
                 } else {
-                    _this.render(_this.currentYear, _this.currentMonth + 1, _this.currentDay, false);
+                    _this.render(_this.currentYear, _this.currentMonth + 1, _this.currentDay, _this.currentHour, _this.currentMinute, _this.currentSecond, false);
                 }
                 event.stopPropagation();
 
             });
             //下一年
             element.getElementsByClassName("Jcalendar-next-year")[0].addEventListener("click", function (event) {
-                _this.render(_this.currentYear + 1, _this.currentMonth, _this.currentDay, false);
+                _this.render(_this.currentYear + 1, _this.currentMonth, _this.currentDay, _this.currentHour, _this.currentMinute, _this.currentSecond, false);
                 event.stopPropagation();
 
             });
             //选择日期
-            element.getElementsByClassName("available")[0].addEventListener("click", function (event) {
-                _this.currentDay = event.target.innerHTML;
-                event.stopPropagation();
+            element.addEventListener("click", function (event) {
+                if (event.target.className.indexOf("available") > -1) {
+                    _this.currentDay = event.target.innerHTML;
+                    element.getElementsByClassName("current")[0].className = "available";
+                    event.target.className = "available current";
+                    event.stopPropagation();
+                }
+
             });
+            //选择时间或选择日期按钮
+            if (_this.timeSelector === true) {
+                element.getElementsByClassName("Jcalendar-btn-tab")[0].addEventListener("click", function (event) {
+                    if (event.target.innerHTML === "选择时间") {
+                        event.target.innerHTML = "选择日期";
+                        element.getElementsByClassName("Jcalendar-time-wrapper")[0].className = "Jcalendar-time-wrapper show";
+                    } else {
+                        event.target.innerHTML = "选择时间";
+                        element.getElementsByClassName("Jcalendar-time-wrapper")[0].className = "Jcalendar-time-wrapper";
+                    }
+                });
+                //时-增加按钮
+                element.getElementsByClassName("hour-add")[0].addEventListener("click", function (event) {
+                    if (_this.currentHour < 23) {
+                        _this.currentHour++;
+                    } else {
+                        _this.currentHour = 0;
+                    }
+                    element.getElementsByClassName("hour-text")[0].innerHTML = toTwo(_this.currentHour);
+                    event.stopPropagation();
+                });
+                //时-减少按钮
+                element.getElementsByClassName("hour-dec")[0].addEventListener("click", function (event) {
+                    if (_this.currentHour > 0) {
+                        _this.currentHour--;
+                    } else {
+                        _this.currentHour = 23;
+                    }
+                    element.getElementsByClassName("hour-text")[0].innerHTML = toTwo(_this.currentHour);
+                    event.stopPropagation();
+                });
+                //分-增加按钮
+                element.getElementsByClassName("minute-add")[0].addEventListener("click", function (event) {
+                    if (_this.currentMinute < 59) {
+                        _this.currentMinute++;
+                    } else {
+                        _this.currentMinute = 0;
+                    }
+                    element.getElementsByClassName("hour-text")[0].innerHTML = toTwo(_this.currentHour);
+                    element.getElementsByClassName("minute-text")[0].innerHTML = toTwo(_this.currentMinute);
+                    event.stopPropagation();
+                });
+                //分-减少按钮
+                element.getElementsByClassName("minute-dec")[0].addEventListener("click", function (event) {
+                    if (_this.currentMinute > 0) {
+                        _this.currentMinute--;
+                    } else {
+                        _this.currentMinute = 59;
+                    }
+                    element.getElementsByClassName("hour-text")[0].innerHTML = toTwo(_this.currentHour);
+                    element.getElementsByClassName("minute-text")[0].innerHTML = toTwo(_this.currentMinute);
+                    event.stopPropagation();
+                });
+                //秒-增加按钮
+                element.getElementsByClassName("second-add")[0].addEventListener("click", function (event) {
+                    if (_this.currentSecond < 59) {
+                        _this.currentSecond++;
+                    } else {
+                        _this.currentSecond = 0;
+                    }
+                    element.getElementsByClassName("hour-text")[0].innerHTML = toTwo(_this.currentHour);
+                    element.getElementsByClassName("minute-text")[0].innerHTML = toTwo(_this.currentMinute);
+                    element.getElementsByClassName("second-text")[0].innerHTML = toTwo(_this.currentSecond);
+                    event.stopPropagation();
+                });
+                //秒-减少按钮            
+                element.getElementsByClassName("second-dec")[0].addEventListener("click", function (event) {
+                    if (_this.currentSecond > 0) {
+                        _this.currentSecond--;
+                    } else {
+                        _this.currentSecond = 59;
+                    }
+                    element.getElementsByClassName("hour-text")[0].innerHTML = toTwo(_this.currentHour);
+                    element.getElementsByClassName("minute-text")[0].innerHTML = toTwo(_this.currentMinute);
+                    element.getElementsByClassName("second-text")[0].innerHTML = toTwo(_this.currentSecond);
+                    event.stopPropagation();
+                });
+            }
+
             bg.addEventListener("click", function () {
                 removeSelector();
             });

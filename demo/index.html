@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Jcalendar-demo</title>
+    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+        crossorigin="anonymous">
+    <link rel="stylesheet" href="../lib/Jcalendar.min.css">
+</head>
+
+<body>
+    <div style="padding: 20px;">
+        <h1 class="text-center">Jcalendar</h1>
+        <form>
+            <div class="form-group">
+                <label>选择日期</label>
+                <input id="demo1" class="form-control" type="text" placeholder="请选择日期" />
+            </div>
+            <pre>
+    new Jcalendar({
+        input:"demo1",
+    });
+            </pre>
+            <div class="form-group">
+                <label>选择日期带时间</label>
+                <input id="demo2" class="form-control" type="text" placeholder="请选择日期带时间" />
+            </div>
+            <pre>
+    new Jcalendar({
+        input: "demo2",
+        timeSelector: true,
+    });
+            </pre>
+            <div class="form-group">
+                <label>自定义标题</label>
+                <input id="demo3" class="form-control" type="text" placeholder="请选择开始时间" />
+            </div>
+            <pre>
+    new Jcalendar({
+        input: "demo3",
+        timeSelector: true,
+        title: "请选择开始时间"
+    });
+            </pre>
+        </form>
+        <h4>参数</h4>
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>属性</th>
+                    <th>取值类型</th>
+                    <th>取值范围</th>
+                    <th>说明</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>input</td>
+                    <td>String</td>
+                    <td>字符串</td>
+                    <td>input框的id值</td>
+                </tr>
+                <tr>
+                    <td>timeSelector</td>
+                    <td>Boolean</td>
+                    <td>true或者false</td>
+                    <td>是否带时间选择，默认是false</td>
+                </tr>
+                <tr>
+                    <td>title</td>
+                    <td>String</td>
+                    <td>字符串</td>
+                    <td>时间选择器标题，默认是”请选择“</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+<script src="../lib/Jcalendar.min.js"></script>
+<script>
+    new Jcalendar({
+        input: "demo1",
+    });
+    new Jcalendar({
+        input: "demo2",
+        timeSelector: true,
+    });
+    new Jcalendar({
+        input: "demo3",
+        timeSelector: true,
+        title: "请选择开始时间"
+    });
+
+</script>
+
+</html>

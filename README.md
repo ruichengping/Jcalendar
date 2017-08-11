@@ -4,7 +4,7 @@
 
 ## 演示
 
-地址：[https://ruichengping.github.io/Jcalendar/demo/][1]
+地址：https://ruichengping.github.io/Jcalendar/demo/
 
 ## 快速上手
 

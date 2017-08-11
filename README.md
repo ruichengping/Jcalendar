@@ -1,3 +1,5 @@
+[![GitHub release](https://img.shields.io/badge/GitHub_release-v2.0.0-brightgreen.svg)]()
+[![npm](https://img.shields.io/badge/npm-v2.0.5-red.svg)](https://www.npmjs.com/package/jcalendar)
 ## 简介
 
 目前Vue和React这些框架都已经有相当优秀成熟的移动UI框架，其中就已经提供了时间选择的控件，本不需要开发一款基于移动端的时间选择控件。但是，我们开发中会需要开发一些独立手机页面，这时候采用这些移动UI框架显然是不合适。正是基于这种情况，Jcalendar应运而生，来解决这类问题。除了为了解决上述情况，Jcalendar还有一个目的就是帮助前端小白学习一个日历插件的原理，来实现自己专属的日历插件。因此，Jcalendar的学习意义远远大于它在项目中的应用。

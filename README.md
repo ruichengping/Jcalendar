@@ -24,6 +24,19 @@
 ```
  new Jcalendar({...})
 ```
+## npm
+
+### 安装
+```
+npm i jcalendar --save-dev
+```
+### js
+```
+ import Jcalendar from ‘jcalendar’;
+ 
+ new Jcalendar({...});
+
+```
 ## 参数介绍
 属性 | 取值类型 | 取值范围 |说明
 ----|---------|---------|----

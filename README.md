@@ -36,6 +36,6 @@ title | String  | 字符串|时间选择器标题，默认是”请选择“
 ### 关于Css样式修改 
 由于Jcalendar将样式单独提出到一个css文件中，并且Jcalendar项目中提供了一个gulpfile用来打包我们的文件。因此，我们需要根据自己的项目需求在**Jcalendar/src/css/Jcalendar.css**中修改成项目所需样式，然后在Jcalendar该根目录下执行**gulp**命令，便可在**Jcalendar/lib**获得重新打包好的js和css文件。
 ### 关于Jcalendar原理学习
-Jcalendar目录下有一个learn目录，这里面文件便是需要的学习的小伙伴所用。关于原理的介绍，我在segmentfault写了一篇文章详细述说了其中原理，有兴趣的小伙伴可以去查阅。
+Jcalendar目录下有一个learn目录，这里面文件便是需要的学习的小伙伴所用。关于原理的介绍，我在segmentfault写了一篇文章详细述说了其中原理，有兴趣的小伙伴可以去查阅。附上地址：https://segmentfault.com/a/1190000010623303
 
 

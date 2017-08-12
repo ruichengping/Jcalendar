@@ -246,7 +246,7 @@
             var container = document.getElementsByClassName("Jcalendar-wrapper")[0];
             if (!flag && typeof container === "object") {
                 container.innerHTML = htmlStr;
-                this.selectorBindEvent(container, documentument.getElementsByClassName("Jcalendar-bg")[0]);
+                this.selectorBindEvent(container, document.getElementsByClassName("Jcalendar-bg")[0]);
             } else {
                 //渲染时间选择器并绑定事件            
                 var element = document.createElement("div");

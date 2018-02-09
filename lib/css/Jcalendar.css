@@ -1,0 +1,163 @@
+@charset "UTF-8";
+.Jcalendar-bg {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  opacity: 0;
+  -webkit-transition: opacity 0.3s;
+  transition: opacity 0.3s; }
+
+.Jcalendar-wrapper {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  box-sizing: border-box;
+  padding: 4px 6px;
+  z-index: 2017;
+  background: #fff;
+  -webkit-transform: translateY(100%);
+          transform: translateY(100%);
+  -webkit-transition: -webkit-transform 0.3s;
+  transition: -webkit-transform 0.3s;
+  transition: transform 0.3s;
+  transition: transform 0.3s, -webkit-transform 0.3s;
+  /* 头部 */
+  /*主体*/ }
+  .Jcalendar-wrapper.show {
+    -webkit-transform: translateY(0) !important;
+            transform: translateY(0) !important; }
+  .Jcalendar-wrapper .Jcalendar-header {
+    text-align: center;
+    height: 38px;
+    line-height: 38px; }
+    .Jcalendar-wrapper .Jcalendar-header .Jcalendar-title-text {
+      color: #1f2f3d;
+      font-size: 16px; }
+    .Jcalendar-wrapper .Jcalendar-header .Jcalendar-btn-cancel,
+    .Jcalendar-wrapper .Jcalendar-header .Jcalendar-btn-sure {
+      font-size: 14px;
+      text-decoration: none;
+      color: #20a0ff;
+      padding: 0 10px; }
+    .Jcalendar-wrapper .Jcalendar-header .Jcalendar-btn-cancel {
+      float: left; }
+    .Jcalendar-wrapper .Jcalendar-header .Jcalendar-btn-sure {
+      float: right; }
+  .Jcalendar-wrapper .Jcalendar-body {
+    position: relative;
+    overflow: hidden;
+    /* 日期选择 */
+    /*时间选择 */ }
+    .Jcalendar-wrapper .Jcalendar-body .Jcalendar-date-wrapper {
+      width: 100%; }
+      .Jcalendar-wrapper .Jcalendar-body .Jcalendar-date-wrapper .Jcalendar-date-header {
+        margin: 4px 6px 12px;
+        text-align: center; }
+        .Jcalendar-wrapper .Jcalendar-body .Jcalendar-date-wrapper .Jcalendar-date-header .Jcalendar-prev-year,
+        .Jcalendar-wrapper .Jcalendar-body .Jcalendar-date-wrapper .Jcalendar-date-header .Jcalendar-prev-month,
+        .Jcalendar-wrapper .Jcalendar-body .Jcalendar-date-wrapper .Jcalendar-date-header .Jcalendar-next-month,
+        .Jcalendar-wrapper .Jcalendar-body .Jcalendar-date-wrapper .Jcalendar-date-header .Jcalendar-next-year {
+          margin: 0;
+          color: #97a8be;
+          font-size: 12px;
+          text-decoration: none;
+          font-weight: 400;
+          padding: 0 8px;
+          vertical-align: 2px; }
+        .Jcalendar-wrapper .Jcalendar-body .Jcalendar-date-wrapper .Jcalendar-date-header .Jcalendar-prev-year,
+        .Jcalendar-wrapper .Jcalendar-body .Jcalendar-date-wrapper .Jcalendar-date-header .Jcalendar-prev-month {
+          float: left; }
+        .Jcalendar-wrapper .Jcalendar-body .Jcalendar-date-wrapper .Jcalendar-date-header .Jcalendar-next-month,
+        .Jcalendar-wrapper .Jcalendar-body .Jcalendar-date-wrapper .Jcalendar-date-header .Jcalendar-next-year {
+          float: right; }
+        .Jcalendar-wrapper .Jcalendar-body .Jcalendar-date-wrapper .Jcalendar-date-header .Jcalendar-year,
+        .Jcalendar-wrapper .Jcalendar-body .Jcalendar-date-wrapper .Jcalendar-date-header .Jcalendar-month {
+          color: #48576a;
+          font-size: 14px;
+          line-height: 22px;
+          padding: 0 8px; }
+      .Jcalendar-wrapper .Jcalendar-body .Jcalendar-date-wrapper .Jcalendar-date-table {
+        width: 100%;
+        border-collapse: collapse; }
+        .Jcalendar-wrapper .Jcalendar-body .Jcalendar-date-wrapper .Jcalendar-date-table th {
+          color: #8391a5;
+          font-size: 12px;
+          line-height: 20px;
+          text-align: center; }
+        .Jcalendar-wrapper .Jcalendar-body .Jcalendar-date-wrapper .Jcalendar-date-table .available {
+          text-align: center;
+          font-size: 12px;
+          color: #48576a;
+          cursor: pointer;
+          width: 32px;
+          height: 32px; }
+        .Jcalendar-wrapper .Jcalendar-body .Jcalendar-date-wrapper .Jcalendar-date-table .current {
+          background-color: #20a0ff !important;
+          color: #fff !important; }
+        .Jcalendar-wrapper .Jcalendar-body .Jcalendar-date-wrapper .Jcalendar-date-table .disabled {
+          text-align: center;
+          font-size: 12px;
+          width: 32px;
+          height: 32px;
+          cursor: not-allowed;
+          color: #ddd; }
+        .Jcalendar-wrapper .Jcalendar-body .Jcalendar-date-wrapper .Jcalendar-date-table .disabled:hover {
+          background-color: #fff !important; }
+    .Jcalendar-wrapper .Jcalendar-body .Jcalendar-time-wrapper {
+      position: absolute;
+      height: 100%;
+      width: 100%;
+      bottom: 0;
+      background-color: #fff;
+      -webkit-transform: translateY(100%);
+              transform: translateY(100%);
+      -webkit-transition: -webkit-transform 0.2s;
+      transition: -webkit-transform 0.2s;
+      transition: transform 0.2s;
+      transition: transform 0.2s, -webkit-transform 0.2s; }
+      .Jcalendar-wrapper .Jcalendar-body .Jcalendar-time-wrapper.show {
+        -webkit-transform: translateY(0) !important;
+                transform: translateY(0) !important; }
+      .Jcalendar-wrapper .Jcalendar-body .Jcalendar-time-wrapper .Jcalendar-time-table {
+        height: 100%;
+        width: 100%;
+        border-collapse: collapse; }
+        .Jcalendar-wrapper .Jcalendar-body .Jcalendar-time-wrapper .Jcalendar-time-table td {
+          text-align: center;
+          width: 33.3%; }
+        .Jcalendar-wrapper .Jcalendar-body .Jcalendar-time-wrapper .Jcalendar-time-table .Jcalendar-time-tag {
+          color: #8391a5;
+          font-size: 16px; }
+          .Jcalendar-wrapper .Jcalendar-body .Jcalendar-time-wrapper .Jcalendar-time-table .Jcalendar-time-tag .hour-add,
+          .Jcalendar-wrapper .Jcalendar-body .Jcalendar-time-wrapper .Jcalendar-time-table .Jcalendar-time-tag .minute-add,
+          .Jcalendar-wrapper .Jcalendar-body .Jcalendar-time-wrapper .Jcalendar-time-table .Jcalendar-time-tag .second-add {
+            color: #20a0ff;
+            height: 38px;
+            line-height: 38px;
+            font-size: 26px;
+            margin: 0; }
+          .Jcalendar-wrapper .Jcalendar-body .Jcalendar-time-wrapper .Jcalendar-time-table .Jcalendar-time-tag .hour-text,
+          .Jcalendar-wrapper .Jcalendar-body .Jcalendar-time-wrapper .Jcalendar-time-table .Jcalendar-time-tag .minute-text,
+          .Jcalendar-wrapper .Jcalendar-body .Jcalendar-time-wrapper .Jcalendar-time-table .Jcalendar-time-tag .second-text {
+            color: #1f2f3d;
+            font-size: 16px; }
+          .Jcalendar-wrapper .Jcalendar-body .Jcalendar-time-wrapper .Jcalendar-time-table .Jcalendar-time-tag .hour-dec,
+          .Jcalendar-wrapper .Jcalendar-body .Jcalendar-time-wrapper .Jcalendar-time-table .Jcalendar-time-tag .minute-dec,
+          .Jcalendar-wrapper .Jcalendar-body .Jcalendar-time-wrapper .Jcalendar-time-table .Jcalendar-time-tag .second-dec {
+            color: #20a0ff;
+            height: 38px;
+            line-height: 38px;
+            font-size: 26px;
+            margin: 0; }
+  .Jcalendar-wrapper .Jcalendar-footer .Jcalendar-btn-tab {
+    border-top: 1px solid #e4e4e4;
+    text-align: center;
+    margin: 0;
+    height: 36px;
+    line-height: 36px;
+    font-size: 14px;
+    color: #1f2f3d; }
